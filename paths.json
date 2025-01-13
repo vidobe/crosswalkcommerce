@@ -1,19 +1,19 @@
 {
     "mappings": [
-      "/content/xwalkcommercedemo/:/",
-      "/content/xwalkcommercedemo/configuration:/.helix/config.json",
-      "/content/xwalkcommercedemo/metadata:/metadata.json",
-      "/content/xwalkcommercedemo/configs:/configs.json",
-      "/content/xwalkcommercedemo/configs-stage:/configs-stage.json",
-      "/content/xwalkcommercedemo/configs-dev:/configs-dev.json",
-      "/content/xwalkcommercedemo/redirects:/redirects.json",
-      "/content/xwalkcommercedemo/placeholders:/placeholders.json",
-      "/content/xwalkcommercedemo/products/recommended-products:/products/recommended-products.json",
-      "/content/xwalkcommercedemo/enrichment/enrichment:/enrichment/enrichment.json",
+      "/content/xwalkdemo/:/",
+      "/content/xwalkdemo/configuration:/.helix/config.json",
+      "/content/xwalkdemo/metadata:/metadata.json",
+      "/content/xwalkdemo/configs:/configs.json",
+      "/content/xwalkdemo/configs-stage:/configs-stage.json",
+      "/content/xwalkdemo/configs-dev:/configs-dev.json",
+      "/content/xwalkdemo/redirects:/redirects.json",
+      "/content/xwalkdemo/placeholders:/placeholders.json",
+      "/content/xwalkdemo/products/recommended-products:/products/recommended-products.json",
+      "/content/xwalkdemo/enrichment/enrichment:/enrichment/enrichment.json",
       "/content/dam/citisignal/images/products/:/images/products/"
     ],
     "includes": [
-      "/content/xwalkcommercedemo",
+      "/content/xwalkdemo",
       "/content/dam/citisignal/images/products/"
     ]
 }
