@@ -1,13 +1,12 @@
-/* eslint-disable dot-notation */
 import { readBlockConfig } from '../../scripts/aem.js';
-import { performCatalogServiceQuery, renderPrice } from '../../scripts/commerce.js';
+import { performCatalogServiceQuery, renderPrice, mapProductAcdl } from '../../scripts/commerce.js';
 
 const productTeaserQuery = `query productTeaser($sku: String!) {
   products(skus: [$sku]) {
     sku
     urlKey
     name
-    shortDescription
+    externalId
     addToCartAllowed
     __typename
     images(roles: ["small_image"]) {
@@ -54,13 +53,10 @@ function renderPlaceholder(config, block) {
     </div>
     <div class="details">
       <h1></h1>
-      <div class="product-description">
-        ${config['description'] !== '' ? config['description'] : ''}
-      </div>
       <div class="price"></div>
       <div class="actions">
-        ${config['cart-button'] ? '<button class="button-tertiary" disabled>Add to Cart</button>' : ''}
-        ${config['details-button'] ? '<a href="#" class="button-primary disabled">View Details</a>' : ''}
+        ${config['details-button'] ? '<a href="#" class="button primary disabled">Details</a>' : ''}
+        ${config['cart-button'] ? '<button class="secondary" disabled>Add to Cart</button>' : ''}
       </div>
     </div>
   `));
@@ -98,7 +94,7 @@ function renderImage(image, size = 250) {
 
 function renderProduct(product, config, block) {
   const {
-    name, urlKey, sku, price, shortDescription, priceRange, addToCartAllowed, __typename,
+    name, urlKey, sku, price, priceRange, addToCartAllowed, __typename,
   } = product;
 
   const currency = price?.final?.amount?.currency || priceRange?.minimum?.final?.amount?.currency;
@@ -113,13 +109,10 @@ function renderProduct(product, config, block) {
     </div>
     <div class="details">
       <h1>${name}</h1>
-      <div class="product-description">
-        ${shortDescription}
-      </div>
       <div class="price">${renderPrice(product, priceFormatter.format)}</div>
       <div class="actions">
-        ${config['cart-button'] && addToCartAllowed && (__typename === 'SimpleProductView') ? '<button class="add-to-cart button-tertiary">Add to Cart</button>' : ''}
-        ${config['details-button'] ? `<a href="/products/${urlKey}/${sku}" class="button-primary">View Details</a>` : ''}
+        ${config['details-button'] ? `<a href="/products/${urlKey}/${sku}" class="button primary">Details</a>` : ''}
+        ${config['cart-button'] && addToCartAllowed && __typename === 'SimpleProductView' ? '<button class="add-to-cart secondary">Add to Cart</button>' : ''}
       </div>
     </div>
   `);
@@ -135,8 +128,7 @@ function renderProduct(product, config, block) {
         sku: product.sku,
       }];
       const { addProductsToCart } = await import('@dropins/storefront-cart/api.js');
-      // TODO: productId not exposed by catalog service as number
-      window.adobeDataLayer.push({ productContext: { productId: 0, ...product } });
+      window.adobeDataLayer.push({ productContext: mapProductAcdl(product) });
       console.debug('onAddToCart', values);
       addProductsToCart(values);
     });
@@ -147,6 +139,7 @@ function renderProduct(product, config, block) {
 
 export default async function decorate(block) {
   const config = readBlockConfig(block);
+  config['sku'] = block.querySelector('[data-aue-prop="sku"]').textContent;
   config['details-button'] = !!(config['details-button'] || config['details-button'] === 'true');
   config['cart-button'] = !!(config['cart-button'] || config['cart-button'] === 'true');
 
