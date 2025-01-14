@@ -633,9 +633,9 @@
         ]
       },
       {
-        "component": "text",
+        "component": "sku",
         "valueType": "string",
-        "name": "default-product",
+        "name": "sku",
         "label": "Default Product",
         "value": ""
       }
