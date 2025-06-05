@@ -279,3 +279,19 @@ main .hero-container > div {
     line-height: normal;
   }
 }
+
+.hero-container {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: var(--large-grid-layout); /* optional, to keep it consistent */
+  z-index: 1000; /* ensure it's on top */
+}
+
+.hero {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
